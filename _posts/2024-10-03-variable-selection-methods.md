@@ -1,8 +1,12 @@
 ---
-layout: post
-tags: [machine learning]
+title: 'Variable Selection Methods'
+date: 2024-10-05
+permalink: /posts/2024/10/variable-selection /
+tags:
+  - machine learning
+  - variable selection
+  - regression
 ---
-
 
 # Variable Selection Methods
 ## Minimal Redundancy Maximum Relevance (MRMR)
