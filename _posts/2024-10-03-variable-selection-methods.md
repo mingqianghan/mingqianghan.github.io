@@ -7,9 +7,10 @@ tags:
   - variable selection
   - regression
 ---
+This post is about variable selection methods for regression problems. 
 
-# Variable Selection Methods
-## Minimal Redundancy Maximum Relevance (MRMR)
+Minimal Redundancy Maximum Relevance (MRMR)
+========
 In feature selection, Mutual Information plays a key role in understanding the dependence between variables. Mutual Information, denoted as $I(x, z)$, measures the mutual dependence between two variables $X$ and $Z$. The formula is:
 
 $$
@@ -32,7 +33,8 @@ MIQ_x = \max_{x \in T} \left(\frac{I(x,y)}{\frac{1}{|S|} \sum_{z \in S} I(x,z)} 
 $$
 
 Once relevance is zero for all features in $T$, any remaining features with zero relevance are added to $S$ in random order.
-## Variable Importance Projection (VIP) Score using Partial Least Squares (PLS)
+Variable Importance Projection (VIP) Score using Partial Least Squares (PLS)
+======
 **Partial Least Squares (PLS)** regression is a method used to model a response variable when there are many predictor variables, which are highly correlated or even collinear. PLS constructs new predictor variables, known as components, as linear combinations of the original predictors. It takes the response variable into account, often leading to models that fit the response variable with fewer components. 
 
 The **Variable Importance in Projection (VIP)** method summarizes the influence of individual variables on the PLS model. The VIP score for variable j is defined as follows:
@@ -52,7 +54,8 @@ The weight $w_{jf}$ indicates the importance of the $j$-th variable in each $f$-
 VIP scores are useful for identifying the variables that contribute most to the explanation of variance in the response variable. Since the average of the squared VIP scores equals 1, variables with a VIP score greater than 1 are considered important for the projection of the PLS model.
 
 
-## References
+References
+=======
 **MRMR**:
 
 The original paper: [Minimum redundancy feature selection from microarray gene expression data](https://pubmed.ncbi.nlm.nih.gov/15852500/)
