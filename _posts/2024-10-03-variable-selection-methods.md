@@ -33,8 +33,10 @@ MIQ_x = \max_{x \in T} \left(\frac{I(x,y)}{\frac{1}{|S|} \sum_{z \in S} I(x,z)} 
 $$
 
 Once relevance is zero for all features in $T$, any remaining features with zero relevance are added to $S$ in random order.
+
 Variable Importance Projection (VIP) Score using Partial Least Squares (PLS)
 ======
+
 **Partial Least Squares (PLS)** regression is a method used to model a response variable when there are many predictor variables, which are highly correlated or even collinear. PLS constructs new predictor variables, known as components, as linear combinations of the original predictors. It takes the response variable into account, often leading to models that fit the response variable with fewer components. 
 
 The **Variable Importance in Projection (VIP)** method summarizes the influence of individual variables on the PLS model. The VIP score for variable j is defined as follows:
