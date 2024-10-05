@@ -4,7 +4,7 @@ collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/2023-spring-teaching-2
 venue: "Kansas State University, Biological and Agricultural Engineering"
-date:
+date: 2023-01-20
 location: "Manhattan, USA"
 ---
 
