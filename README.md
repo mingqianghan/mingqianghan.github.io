@@ -1,4 +1,4 @@
-This was forked from (academicpages)[https://github.com/academicpages/academicpages.github.io] for academic personal websites.
+This was forked from [academicpages](https://github.com/academicpages/academicpages.github.io) for academic personal websites.
 
 <!--
 <div align="center">
