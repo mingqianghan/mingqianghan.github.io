@@ -1,14 +1,12 @@
 ---
 permalink: /
-title: "Welcome to Mingqiang's website!"
+title: "Welcome to my website!"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
 
-Thanks for visiting my website! I am a Ph.D. candidate at Kansas State University!
+I am Mingqiang, a Ph.D. candidate at Kansas State University. My research focuses on advanced technologies for soil moisture and nutrient sensing, where I explore cutting-edge techniques in machine learning, sensor development, and agricultural modeling. Feel free to browse through the links above to learn more about my work and interests.
 
-Mingqiang's personal website
-======
-Take a look at the links above to learn more about me!
+Thank you for visiting!
