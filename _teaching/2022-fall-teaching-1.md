@@ -10,4 +10,4 @@ location: "Manhattan, USA"
 
 Theory and application of measurement systems in biological and agricultural systems, with 
 an emphasis on sensors and data acquisition systems for measuring variables related to soils, plants, animals, machines, 
-and processes. I taught the lab sessions every spring and fall from 2020 to 2022.
+and processes. I taught the lab sessions every fall from 2020 to 2022.
