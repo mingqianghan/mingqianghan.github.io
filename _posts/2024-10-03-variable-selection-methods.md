@@ -2,10 +2,11 @@
 title: 'Variable Selection Methods'
 date: 2024-10-05
 permalink: /posts/2024/10/variable-selection /
+categories:
+  - Data Analysis
 tags:
-  - machine learning
-  - variable selection
-  - regression
+  - Variable Selection
+  - Regression
 ---
 This post is about variable selection methods for regression problems. 
 
