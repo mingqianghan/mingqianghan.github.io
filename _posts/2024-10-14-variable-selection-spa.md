@@ -1,16 +1,14 @@
 ---
-title: Successive Projections Algorithm (SPA) for variable selection
+title: Successive Projections Algorithm (SPA)
 date: 2024-10-14
 permalink: /posts/2024/10/variable-selection-spa /
 categories:
   - Data Analysis
 tags:
   - Variable Selection
-  - Feature Selection
   - Data Analysis
   - Machine Learning
-  - CARS Algorithm
-  - Partial Least Squares (PLS)
+  - SPA Algorithm
   - High-Dimensional Data
   - Spectral Analysis
 ---
