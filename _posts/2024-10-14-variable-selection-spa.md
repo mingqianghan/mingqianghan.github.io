@@ -158,6 +158,6 @@ In this post, we presented both the traditional and QR-based SPA methods for var
 
 ### Further Reading:
 - For more details on QR decomposition, check out [MATLAB’s QR documentation](https://www.mathworks.com/help/matlab/ref/qr.html).
-- Learn more about the classical **Successive Projections Algorithm (SPA)** in the context of spectral analysis [here](https://www.sciencedirect.com/science/article/abs/pii/S0169743901001198).
+- Learn more about the Successive Projections Algorithm (SPA) [here](https://www.sciencedirect.com/science/article/abs/pii/S0169743901001198).
 
 
