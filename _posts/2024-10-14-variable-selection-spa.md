@@ -12,7 +12,7 @@ tags:
   - High-Dimensional Data
   - Spectral Analysis
 ---
-This post is about Successive Projections Algorithm (SPA) for variable selection, a technique for variable selection, especially to identify linearly independent variables.
+This post discusses the Successive Projections Algorithm (SPA), a technique for variable selection, particularly for identifying linearly independent variables.
 
 ### Successive Projections Algorithm
 The idea behind the SPA is easy. It works by iteratively selecting variables that are most independent from the previously selected ones. The algorithm follows these steps:
