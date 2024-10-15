@@ -14,26 +14,26 @@ tags:
 ---
 This post discusses the Successive Projections Algorithm (SPA), a variable selection technique used primarily to identify linearly independent variables.
 
-#### Successive Projections Algorithm
+### Successive Projections Algorithm
 The concept behind SPA is straightforward. The algorithm works by iteratively selecting variables that are the most independent from those previously chosen. The steps are as follows:
 1. Begin by selecting an initial variable.
 2. Project all remaining variables onto the orthogonal subspace of the selected variables.
 3. Choose the variable that is farthest from this subspace (i.e., most independent).
 4. Repeat until the desired number of variables is selected.
 
-#### QR Decomposition for SPA
+### QR Decomposition for SPA
 An efficient alternative for implementing SPA is to use **QR decomposition with column pivoting**, which offers a computational advantage, especially for large datasets. QR decomposition is a matrix factorization technique that breaks a matrix into two components:
 - `Q` (an orthogonal matrix) and 
 - `R` (an upper triangular matrix).
   
 Using QR decomposition with column pivoting allows for a reordering of columns based on their linear independence. This approach aligns with SPA’s goal of selecting the most independent variables, providing a faster and computationally optimized alternative.
 
-#### Benefits of QR Decomposition for SPA
+### Benefits of QR Decomposition for SPA
 - Efficiency: Handles large datasets more efficiently than iterative projection.
 - Simplicity: Column pivoting offers a straightforward way to rank variables by their importance.
 - Flexibility: It approximates SPA’s selection process, significantly reducing execution time.
 
-#### Implementing SPA Using QR Decomposition
+### Implementing SPA Using QR Decomposition
 
 Below is a step-by-step guide to implementing SPA using the built-in QR decomposition function in MATLAB.
 
@@ -55,7 +55,7 @@ function chain = projections_qr(X, k, M)
     chain = order(1:M)';
 end
 ```
-#### Classical SPA Implementation
+### Classical SPA Implementation
 Now, let’s compare this approach with the traditional SPA implementation. Note that the following code can be further optimized, for example, by avoiding the computation of the inverse matrix:
 ```matlab
 function Idx = spa_classic(X, k, M)
@@ -82,6 +82,7 @@ function Idx = spa_classic(X, k, M)
     end
 end
 ```
+### Results
 Now that we have both methods, we can compare their running times with the following test script:
 ```matlab
 clc;
@@ -130,7 +131,6 @@ else
     fprintf('QR-based SPA is faster by %.6f seconds\n', time_classic - time_qr);
 end
 ```
-#### Results
 Here’s an example of the output for a dataset with $N = 100$ observations and $K = 7$ predictor variables:
 ```matlab
 Selected variable indices by classic spa:
@@ -153,10 +153,10 @@ spa_qr is faster by 0.000363 seconds
 | **Starting Variable**           | Begins with a user-selected variable                  | Begins with a scaled version of the user-selected variable |
 | **Main Goal**                   | Maximize linear independence between variables        | Maximize linear independence between variables   |
 
-#### Conclusion
+### Conclusion
 In this post, we presented both the traditional and QR-based SPA methods for variable selection. While both methods achieve the goal of selecting independent variables, the QR-based method offers improved efficiency, particularly for large datasets. By leveraging MATLAB’s QR decomposition function, you can achieve faster results while maintaining the robustness of SPA.
 
-#### Further Reading:
+### Further Reading:
 - For more details on QR decomposition, check out [MATLAB’s QR documentation](https://www.mathworks.com/help/matlab/ref/qr.html).
 - Learn more about the classical **Successive Projections Algorithm (SPA)** in the context of spectral analysis [here](https://www.sciencedirect.com/science/article/abs/pii/S0169743901001198).
 
