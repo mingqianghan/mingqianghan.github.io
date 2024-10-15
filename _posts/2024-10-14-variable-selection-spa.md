@@ -12,29 +12,25 @@ tags:
   - High-Dimensional Data
   - Spectral Analysis
 ---
-This post is about Successive Projections Algorithm (SPA) for variable selection.
-
-### Introduction
-The **Successive Projections Algorithm (SPA)** is a technique for variable selection, especially when you are looking to identify variables (or features) that are linearly independent. In this blog, we explore how to leverage QR decomposition to implement SPA in a more efficient and computationally friendly way. While QR decomposition is not the traditional method used for SPA, it provides an excellent alternative, especially when handling large datasets where computational efficiency is critical.
+This post is about Successive Projections Algorithm (SPA) for variable selection, a technique for variable selection, especially to identify linearly independent variables.
 
 ### Successive Projections Algorithm
-The goal of SPA is to select a subset of variables such that these variables are as linearly independent as possible. This is useful when you have many potentially redundant variables, and you want to select only those that provide the most new information
-The classical SPA works by iteratively selecting variables:
-1. Start with an initial variable.
-2. Project all other variables onto the subspace orthogonal to the selected ones.
-3. Select the next variable that is farthest from this subspace (i.e., the most independent).
-4. Repeat this process until the desired number of variables is selected.
+The idea behind the SPA is easy. It works by iteratively selecting variables that are most independent from the previously selected ones. The algorithm follows these steps:
+1. Begin by selecting an initial variable.
+2. Project all remaining variables onto the orthogonal subspace of the selected variables.
+3. Choose the variable that is farthest from this subspace (i.e., most independent).
+4. Repeat until the desired number of variables is selected.
 
 ### QR Decomposition for SPA
-**QR decomposition** is a matrix factorization technique that splits a matrix into two components:
+We can implement this using an efficient alternative by using QR decomposition with column pivoting, which offers a computational advantage when handling large datasets. **QR decomposition** is a matrix factorization technique that splits a matrix into two components:
 - `Q` (an orthogonal matrix) and 
 - `R` (an upper triangular matrix).
 When combined with **column pivoting**, QR decomposition provides a way to reorder the columns of a matrix based on their linear independence. This column reordering naturally aligns with the goal of SPA—selecting the most independent variables. 
 
-Using QR decomposition in place of iterative projections can offer several advantages:
-- **Efficiency**: QR decomposition is computationally optimized and can handle large datasets with ease.
-- **Simplicity**: The column pivoting mechanism directly provides an ordering of variables, which can serve as the selection criteria in SPA.
-- **Flexibility**: While QR decomposition does not exactly mimic the step-by-step projections of SPA, it offers a reasonable approximation with faster execution.
+### Benefits of QR Decomposition for SPA
+- Efficiency: Handles large datasets more efficiently than iterative projection.
+- Simplicity: Column pivoting offers a straightforward way to rank variables by their importance.
+- Flexibility: It approximates SPA’s selection process, significantly reducing execution time.
 
 ### Implementing SPA Using QR Decomposition
 
@@ -42,59 +38,110 @@ Below is a step-by-step guide to implementing SPA using the built-in QR decompos
 
 ```matlab
 function chain = projections_qr(X, k, M)
-    % Projections routine for the Successive Projections Algorithm using the
-    % built-in QR function of Matlab
-    %
-    % Inputs:
-    % X --> Matrix of predictor variables (# objects N x # variables K)
-    % k --> Index of the initial column for the projection operations
-    % M --> Number of variables to include in the chain
-    %
-    % Outputs:
-    % chain --> Index set of the variables selected through SPA using QR
-
-    % Make a copy of X to be modified
+    % Projections routine for Successive Projections Algorithm using QR decomposition
+    % Inputs: 
+    % X --> Predictor matrix (N x K), 
+    % k --> Initial column index,
+    % M --> Number of variables to select.
+    % Output: chain --> Index set of selected variables
+    
     X_projected = X;
-
-    % Compute the norms of each column
     norms = sum(X_projected.^2);
-    norm_max = max(norms); % Find the largest norm
-
-    % Scale the kth column to ensure it has the largest norm
+    norm_max = max(norms);
     X_projected(:, k) = X_projected(:, k) * 2 * norm_max / norms(k);
-
-    % Perform QR decomposition with column pivoting
+    
     [~, ~, order] = qr(X_projected, 0);
-
-    % Select the first M variables based on the column ordering from QR
     chain = order(1:M)';
 end
 ```
-### Explanation of the Code
-#### Input Parameters:
-- **`X`**: The matrix of predictor variables, where rows represent samples and columns represent features.
-- **`k`**: The index of the initial column that will be selected first.
-- **`M`**: The number of variables to select.
+### Classical SPA Implementation
+Now, let's compare this with the traditional SPA implementation:
+```matlab
+function Idx = spa_classic(X, k, M)
+    % Classic Successive Projections Algorithm (SPA)
+    % Inputs:
+    % X --> Data matrix (N x K), 
+    % k --> Initial column index,
+    % M --> Number of variables to select.
+    % Output: Idx --> Selected variable indices
+    
+    [N, K] = size(X);
+    Idx = zeros(1, M);
+    Idx(1) = k;
+    X_selected = X(:, k);
+    
+    for i = 2:M
+        P = eye(N) - (X_selected / (X_selected' * X_selected)) * X_selected';
+        X_projected = P * X;
+        norms = sum(X_projected.^2);
+        norms(Idx(1:i-1)) = 0;
+        [~, new_selection] = max(norms);
+        Idx(i) = new_selection;
+        X_selected = [X_selected, X(:, new_selection)];
+    end
+end
+```
+Now that we have both methods, we can compare their running times with the following test script:
+```matlab
+clc;
+clear;
 
-#### Column Norm Calculation:
-The algorithm calculates the norms of each column and finds the largest norm. This step ensures that the algorithm has a baseline to compare the magnitude of columns.
+% N = number of observations, K = number of variables (predictors)
+N = 100;  % Number of observations (rows)
+K = 7;    % Number of predictor variables (columns)
 
-#### Scaling the Initial Column:
-The initial column (indexed by `k`) is scaled to have the largest norm, ensuring that it is selected first during the QR decomposition process. This scaling step is unique to this implementation and ensures that the first column has priority in the selection process.
+% Generate a synthetic dataset with correlated and uncorrelated variables
+x1 = randn(N, 1)*10;
+x2 = 2 * x1 + 0.01 * randn(N, 1);
+x3 = 5 * x1 + 0.01 * randn(N, 1);
+x4 = 7 * x1 + 0.01 * randn(N, 1);
 
-#### QR Decomposition with Pivoting:
-The built-in `qr` function in MATLAB performs the decomposition with column pivoting. The third output, `order`, contains the indices of the columns in the order of their importance (how well they explain variance while being independent from others).
+% Combine correlated and uncorrelated variables
+X = [x1, randn(N, 1)*10, x2, x3, randn(N, 1)*10, x4, randn(N, 1)*10];
 
-#### Selecting the Top M Variables:
-The variable selection is done by picking the first `M` columns based on the `order` vector returned by the QR decomposition.
+% Select starting variable and number of variables to pick
+k = 1;   % Initial variable index
+M = 4;   % Number of variables to select
 
-### Why QR-Based SPA Works
-While this method doesn't explicitly project one variable at a time (as done in traditional SPA), QR decomposition with column pivoting indirectly achieves the same goal. Here’s why it works:
+% Measure time for spa_classic
+tic;  
+Idx_classic = spa_classic(X, k, M);
+time_classic = toc;
 
-- **QR decomposition** identifies columns that are most independent from one another, which aligns with SPA's goal of selecting variables that are linearly independent.
-- The **pivoting mechanism** in QR reorders the variables, giving you an immediate ranking of the most informative (independent) variables.
-- The first column is scaled to ensure it is prioritized in the selection, mimicking the "starting variable" behavior of traditional SPA.
+% Measure time for spa_qr
+tic;
+Idx_qr = projections_qr(X, k, M);
+time_qr = toc;
 
+% Display results
+disp('Selected variable indices by Classic SPA:');
+disp(Idx_classic);
+fprintf('Time taken by Classic SPA: %.6f seconds\n', time_classic);
+
+disp('Selected variable indices by QR-based SPA:');
+disp(Idx_qr);
+fprintf('Time taken by QR-based SPA: %.6f seconds\n', time_qr);
+
+% Compare times
+if time_classic < time_qr
+    fprintf('Classic SPA is faster by %.6f seconds\n', time_qr - time_classic);
+else
+    fprintf('QR-based SPA is faster by %.6f seconds\n', time_classic - time_qr);
+end
+```
+### Results
+Here’s an example of the output for a dataset with $N = 100$ observations and $K = 7$ predictor variables:
+```matlab
+Selected variable indices by classic spa:
+     1     7     2     5
+
+Time taken by spa_classic: 0.000430 seconds
+Selected variable indices by spa_qr:
+     1     7     2     5
+
+Time taken by spa_qr: 0.000067 seconds
+spa_qr is faster by 0.000363 seconds
+```
 ### Comparison: Classical SPA vs. QR-based SPA
 
 | **Aspect**                     | **Classical SPA**                                      | **QR-based SPA**                                 |
@@ -105,18 +152,8 @@ While this method doesn't explicitly project one variable at a time (as done in 
 | **Starting Variable**           | Begins with a user-selected variable                  | Begins with a scaled version of the user-selected variable |
 | **Main Goal**                   | Maximize linear independence between variables        | Maximize linear independence between variables   |
 
-### When to Use QR-based SPA?
-
-- **Large datasets**: When working with large datasets, QR-based SPA can offer significant performance benefits due to its computational efficiency.
-- **Fast variable selection**: If you need a fast method to select a subset of variables that are maximally independent, QR-based SPA provides a quick solution.
-- **Simpler implementation**: QR decomposition is a widely-used linear algebra technique, and it simplifies the variable selection process by avoiding iterative projections.
-
 ### Conclusion
-The **QR decomposition method** provides a convenient and efficient alternative to traditional SPA for variable selection. While it differs from the classical algorithm in the way projections are handled, it aligns with the underlying goal of SPA: selecting linearly independent variables that are maximally informative.
-
-For practical applications, particularly with large datasets, the QR-based approach offers a computationally attractive solution without sacrificing the quality of variable selection. By leveraging MATLAB’s built-in QR decomposition function with column pivoting, this method ensures efficient and robust feature selection.
-
-Give it a try in your own projects and see how it can streamline the feature selection process!
+In this post, we presented both the traditional and QR-based SPA methods for variable selection. While both methods achieve the goal of selecting independent variables, the QR-based method offers improved efficiency, particularly for large datasets. By leveraging MATLAB’s QR decomposition function, you can achieve faster results while maintaining the robustness of SPA.
 
 ### Further Reading:
 - For more details on QR decomposition, check out [MATLAB’s QR documentation](https://www.mathworks.com/help/matlab/ref/qr.html).
