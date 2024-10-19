@@ -1,5 +1,5 @@
 ---
-title: Successive Projections Algorithm (SPA)
+title: Successive Projections Algorithm (SPA) for Variable Selection
 date: 2024-10-14
 permalink: /posts/2024/10/variable-selection-spa /
 categories:
