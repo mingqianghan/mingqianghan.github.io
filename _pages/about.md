@@ -6,7 +6,6 @@ redirect_from:
   - /about/
   - /about.html
 ---
-
-I am Mingqiang, a Ph.D. candidate at Kansas State University. My research focuses on advanced technologies for soil moisture and nutrient sensing, where I explore cutting-edge techniques in machine learning, sensor development, and agricultural modeling. Feel free to browse through the links above to learn more about my work and interests.
+I develop precision farming technologies by integrating advanced sensing hardware, AI/ML, and IoT systems. My work focuses on building end-to-end custom sensor solutions, PCB design, embedded firmware, physics-based modeling, and deep learning pipelines. I'm skilled in Python, C/C++, MATLAB, and IoT protocols, with a strong commitment to creating smart, efficient tools that advance modern agriculture. Feel free to browse the links above to learn more about my work and interests.
 
 Thank you for visiting!
