@@ -17,10 +17,11 @@ Education
 Work experience
 ======
 
-* Fall 2015: Research Assistant
+* Fall 2018: Research Assistant
   * Kansas State University
-  * Duties included: 
-  * Supervisor: 
+* Spring 2019: Teaching Assistant
+  * Kansas State University
+
 
 <!--
 Skills
